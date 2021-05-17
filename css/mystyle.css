@@ -1,0 +1,153 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  width: 360px;
+  padding: 30px 0 0;
+  margin: auto;
+}
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 50px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #aaa;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #43A047;
+}
+
+.form form {
+  margin-bottom: 5px;
+}
+
+.errmsg {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: red;
+}
+
+body {
+  background: #eee; /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, #eee, #eee);
+  background: -moz-linear-gradient(right, #stylesheet, #eee);
+  background: -o-linear-gradient(right, #eee, #eee);
+  background: linear-gradient(to left, #eee, #eee);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+.btn-logout {
+  position : absolute;
+  right : 10px;
+}
+
+.form-btn {
+  font-family: "Roboto", sans-serif;
+  background: #aaa;
+  border: 0;
+  padding: 5px 20px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.form-btn:hover,.form-btn:active,.form-btn:focus {
+  background: #43A047;
+}
+
+.fieldset {
+  background-color: #FFF;
+  width: 450px;
+  margin: 20px;
+  padding: 10px 30px;
+  text-align: left;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  float : left;
+}
+
+.fieldset_label {
+  background-color:#999;
+  color:#fff;
+  text-align:center;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  margin-bottom : 5px;
+  padding:3px;
+}
+
+.field {
+  margin-bottom:10px;
+}
+
+.field label {
+  position:absolute;
+  color:#005;
+  width : 170px;
+  text-align : right;
+}
+
+.field span, .field input, .field select, .field textarea {
+  margin-left : 180px;
+  font-weight:bold;
+}
+
+.liste {
+  margin : 0px 20px;
+  padding: 10px;
+  background-color: #FFF;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  font-family: "Roboto", sans-serif;
+  text-align : left;
+}
+
+.liste table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.liste th {
+  background-color:#555;
+  color : #fff;
+  text-align : center;
+}
+
+.liste td, .liste th {
+  border-style: solid ;
+  border-color : #999;
+  border-width:1px;
+  padding : 5px;
+}
+
+.xdebug-error, .xe-warning {display:none !important;}
