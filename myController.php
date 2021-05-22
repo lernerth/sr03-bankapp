@@ -40,26 +40,35 @@ if (isset($_REQUEST['action'])) {
 
     } else if ($_REQUEST['action'] == 'transfert') {
         /* ======== TRANSFERT ======== */
-        if (is_numeric($_REQUEST['montant'])) {
-            $utilisateur = false;
-            $utilisateur = transfert($_REQUEST['destination'], $_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
-            if ($utilisateur) {
-                $_SESSION["connected_user"]["solde_compte"] = getSoldeCompte($_SESSION["connected_user"]["numero_compte"]);
-                $url_redirect = "vw_virement.php?trf_ok";
-            }else {
+        if (!isset($_REQUEST['mytoken']) || $_REQUEST['mytoken'] != $_SESSION['mytoken']) {
+            // echec vérification du token (ex : attaque CSRF)
+            $url_redirect = "moncompte.php?err_token";
+        } 
+        else if(isVirementSessionExpired()){
+            $url_redirect = "login.php?disconnect";
+        }
+        else{
+            if (is_numeric($_REQUEST['montant'])) {
+                $utilisateur = false;
+                $utilisateur = transfert($_REQUEST['destination'], $_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
+                if ($utilisateur) {
+                    $_SESSION["connected_user"]["solde_compte"] = getSoldeCompte($_SESSION["connected_user"]["numero_compte"]);
+                    $url_redirect = "vw_virement.php?trf_ok";
+                }else {
+                    $url_redirect = "vw_virement.php?bad_mtordest";
+                }
+                
+            } else {
                 $url_redirect = "vw_virement.php?bad_mt=".$_REQUEST['montant'];
             }
-              
-          } else {
-              $url_redirect = "vw_virement.php?bad_mt=".$_REQUEST['montant'];
-          }
+        }
        
-      } else if ($_REQUEST['action'] == 'sendmsg') {
+    } else if ($_REQUEST['action'] == 'sendmsg') {
           /* ======== MESSAGE ======== */
           addMessage($_REQUEST['to'],$_SESSION["connected_user"]["id_user"],$_REQUEST['sujet'],$_REQUEST['corps']);
           $url_redirect = "messagerie.php?msg_ok";
               
-      } else if ($_REQUEST['action'] == 'msglist') {
+    } else if ($_REQUEST['action'] == 'msglist') {
           /* ======== MESSAGE ======== */
           $_SESSION['messagesRecus'] = findMessagesInbox($_SESSION["connected_user"]["id_user"]);
           $url_redirect = "messagerie.php";          

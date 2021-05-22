@@ -7,6 +7,10 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
     header('Location: login.php');      
     exit();
 } 
+ 
+$mytoken = bin2hex(random_bytes(128)); // token qui va servir à prévenir des attaques CSRF 
+$_SESSION["mytoken"] = $mytoken;
+$_SESSION['virementOpened_time'] = time(); 
 ?>
 
 <!doctype html>
@@ -67,6 +71,7 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
         <article>
         <form method="POST" action="myController.php">
           <input type="hidden" name="action" value="transfert">
+          <input type="hidden" name="mytoken" value="<?php echo $mytoken; ?>">
           <div class="fieldset">
               <div class="fieldset_label">
                   <span>Transférer de l'argent</span>
@@ -84,6 +89,9 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
               }
               if (isset($_REQUEST["bad_mt"])) {
                 echo '<p>Le montant saisi est incorrect : '.$_REQUEST["bad_mt"].'</p>';
+              }
+              if (isset($_REQUEST["bad_mtordest"])) {
+                echo '<p>Le compte ou le montant saisi est incorrect. </p>';
               }
               ?>
           </div>

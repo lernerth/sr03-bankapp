@@ -76,8 +76,10 @@ function findAllUsers()
 
 function getSoldeCompte($src) {
   $mysqli = getMySqliConnection();
-  $req="select solde_compte from users where numero_compte='$src'";
-    if (!$result = $mysqli->query($req)) {
+  $req = $mysqli->prepare('select solde_compte from users where numero_compte=?');
+  $req->bind_param('s', $src); // 's' specifies the variable type => 'string'
+  $req->execute();
+    if (!$result =  $req->get_result()) {
       echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
     } else {
       $solde_compte = $result->fetch_assoc();
@@ -87,31 +89,62 @@ function getSoldeCompte($src) {
     $mysqli->close();
     return $solde_compte;
 }
+function ifCompteExist($src)
+{
+  $mysqli = getMySqliConnection();
+
+  if ($mysqli->connect_error) {
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
+    return false;
+  } else {
+    $stmt = $mysqli->prepare("select count(*) as nb_tentatives from users where numero_compte=?");
+    $stmt->bind_param("s",  $src);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $mysqli->close();
+    if ($count == 0) {
+      return false;  
+    } else {
+      return true;
+    }
+    
+  }
+}
+
 
 function transfert($dest, $src, $mt) {
   $mysqli = getMySqliConnection();
   if ($mysqli->connect_error) {
-      trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
+      echo 'Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error;
       return false;
   } 
   if($mt>0 && $dest!=$src){
     $solde_compte =getSoldeCompte($src);
     
     if ($solde_compte < $mt) return false;
-    //need a transaction here
-      $req="START TRANSACTION;
-      update users set solde_compte=solde_compte+$mt where numero_compte='$dest';
-      update users set solde_compte=solde_compte-$mt where numero_compte='$src';
-      COMMIT;
-      ";
-      if (!$result = $mysqli->multi_query($req)) {
-          echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
-          return false;
-      }
+    if (!ifCompteExist($dest)) return false;
+    /* Start transaction */
+    $mysqli->begin_transaction();
+
+    try {
+      $stmt = $mysqli->prepare('update users set solde_compte=solde_compte+? where numero_compte=?');
+      $stmt->bind_param('ds',  $mt,$dest);
+      $stmt->execute();
+      $stmt = $mysqli->prepare('update users set solde_compte=solde_compte-? where numero_compte=?');
+      $stmt->bind_param('ds',  $mt, $src);
+      $stmt->execute();
+      /* If code reaches this point without errors then commit the data in the database */
+      $mysqli->commit();
       $mysqli->close();
       return true;
+    } catch (mysqli_sql_exception $exception) {
+      $mysqli->rollback();
+      throw $exception;
+      $mysqli->close();
+      return false;
+    }
   }
-  return false;
 }
 
 
@@ -172,13 +205,23 @@ function ipIsBanned($ip)
     $stmt->execute();
     $stmt->bind_result($count);
     $stmt->fetch();
+    $mysqli->close();
     if ($count > 9) {
       return true; // cette IP a atteint le nombre maxi de 10 tentatives infructueuses
     } else {
       return false;
     }
-    $mysqli->close();
+    
   }
+}
+
+function isVirementSessionExpired() {
+	$login_session_duration = 5*60; //5 minutes
+	$current_time = time(); 
+	if(((time() - $_SESSION['virementOpened_time']) > $login_session_duration)){ 
+			return true; //expired
+		} 
+	return false;
 }
 
 function mlog()

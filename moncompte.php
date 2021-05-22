@@ -8,6 +8,7 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
     header('Location: login.php');      
     exit();
 }
+
 ?>
 
 <!doctype html>
