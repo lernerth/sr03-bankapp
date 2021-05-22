@@ -61,7 +61,7 @@ if (isset($_REQUEST['action'])) {
               
       } else if ($_REQUEST['action'] == 'msglist') {
           /* ======== MESSAGE ======== */
-          $_SESSION['messagesRecus'] = findMessagesInbox($_REQUEST["userid"]);
+          $_SESSION['messagesRecus'] = findMessagesInbox($_SESSION["connected_user"]["id_user"]);
           $url_redirect = "messagerie.php";          
       } 
     }
