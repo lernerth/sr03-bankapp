@@ -45,25 +45,25 @@ if (isset($_REQUEST['action'])) {
             $utilisateur = transfert($_REQUEST['destination'], $_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
             if ($utilisateur) {
                 $_SESSION["connected_user"]["solde_compte"] = getSoldeCompte($_SESSION["connected_user"]["numero_compte"]);
-                $url_redirect = "vw_moncompte.php?trf_ok";
-            } else {
-                $url_redirect = "vw_moncompte.php?bad_mt=" . $_REQUEST['montant'];
+                $url_redirect = "vw_virement.php?trf_ok";
+            }else {
+                $url_redirect = "vw_virement.php?bad_mt=".$_REQUEST['montant'];
             }
-        } else {
-            $url_redirect = "moncompte.php?bad_mt=" . $_REQUEST['montant'];
-        }
-
-    } else if ($_REQUEST['action'] == 'sendmsg') {
-        /* ======== MESSAGE ======== */
-        addMessage($_REQUEST['to'], $_SESSION["connected_user"]["id_user"], $_REQUEST['sujet'], $_REQUEST['corps']);
-        $url_redirect = "messagerie.php?msg_ok";
-
-    } else if ($_REQUEST['action'] == 'msglist') {
-        /* ======== MESSAGE ======== */
-        $_SESSION['messagesRecus'] = findMessagesInbox($_SESSION["connected_user"]["id_user"]);
-        $url_redirect = "messagerie.php";
+              
+          } else {
+              $url_redirect = "vw_virement.php?bad_mt=".$_REQUEST['montant'];
+          }
+       
+      } else if ($_REQUEST['action'] == 'sendmsg') {
+          /* ======== MESSAGE ======== */
+          addMessage($_REQUEST['to'],$_SESSION["connected_user"]["id_user"],$_REQUEST['sujet'],$_REQUEST['corps']);
+          $url_redirect = "messagerie.php?msg_ok";
+              
+      } else if ($_REQUEST['action'] == 'msglist') {
+          /* ======== MESSAGE ======== */
+          $_SESSION['messagesRecus'] = findMessagesInbox($_REQUEST["userid"]);
+          $url_redirect = "messagerie.php";          
+      } 
     }
-}
-
 header("Location: $url_redirect");
 ?>

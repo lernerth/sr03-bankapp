@@ -14,13 +14,20 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
 <head>
   <meta charset="utf-8">
   <title>Virement</title>
-  <link rel="stylesheet" type="text/css" media="all"  href="css/mystyle.css" />
+ 
+  <link rel="stylesheet" type="text/css" media="all" href="css/messagerie.css" />
+  <style>
+    .btn-logout {position: absolute; right: 15px; top: 15px;}
+  </style>
 </head>
 <body>
     <header>
+        <a class="moncompte" href="moncompte.php">
+            <span class="tool_name">Mon Compte</span>
+        </a>
         <form method="POST" action="myController.php">
             <input type="hidden" name="action" value="disconnect">
-            <input type="hidden" name="loginPage" value="vw_login.php?disconnect">
+            <input type="hidden" name="loginPage" value="login.php?disconnect">
             <button class="btn-logout form-btn">Déconnexion</button>
         </form>
         
