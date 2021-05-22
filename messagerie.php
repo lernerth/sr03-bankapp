@@ -56,7 +56,7 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
                         <label>Sujet : </label><input type="text" size="20" name="sujet">
                     </div>
                     <div class="field">
-                        <label>Message : </label><textarea name="corps" cols="25" rows="3""></textarea>
+                        <label>Message : </label><textarea name="corps" cols="25" rows="3"></textarea>
                     </div>
                     <button class=" form-btn">Envoyer</button>
                         <?php

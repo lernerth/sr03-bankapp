@@ -149,7 +149,7 @@ function addMessage($to,$from,$subject,$body)
       trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error, E_USER_ERROR);
   } else {
       // Pour faire vraiment propre, on devrait tester si le execute et le prepare se passent bien
-      $stmt = $mysqli->prepare("insert into messages(id_user_to,id_user_from,sujet_msg,corps_msge) values(?,?,?,?)");  
+      $stmt = $mysqli->prepare("insert into messages(id_user_to,id_user_from,sujet_msg,corps_msg) values(?,?,?,?)");  
       $stmt->bind_param("iiss", $to,$from,$subject,$body); // on lie les paramètres de la requête préparée avec les variables
       $stmt->execute(); 
       $stmt->close();
