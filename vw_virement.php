@@ -1,5 +1,12 @@
 <?php
-  session_start();
+require_once('include.php');
+session_start();
+
+if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
+    // utilisateur non connecté
+    header('Location: login.php');      
+    exit();
+} 
 ?>
 
 <!doctype html>

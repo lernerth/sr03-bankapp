@@ -1,5 +1,13 @@
 <?php
+require_once('include.php');
+
 session_start();
+
+if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
+    // utilisateur non connecté
+    header('Location: login.php');      
+    exit();
+}
 ?>
 
 <!doctype html>
@@ -24,7 +32,6 @@ session_start();
     <header>
         <form method="POST" action="myController.php">
             <input type="hidden" name="action" value="disconnect">
-            <input type="hidden" name="loginPage" value="login.php?disconnect">
             <button class="btn-logout form-btn">Déconnexion</button>
         </form>
 
@@ -58,7 +65,7 @@ session_start();
                     <span>OUTILS</span>
                 </div>
                 <div class="tools_container">
-                    <a class="messagerie" href="myController.php?action=msglist&userid=<?php echo $_SESSION["connected_user"]["id_user"]; ?>">
+                    <a class="messagerie" href="myController.php?action=msglist">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-messagerie"></use>
                         </svg>

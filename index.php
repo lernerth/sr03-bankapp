@@ -1,9 +1,9 @@
 <?php
+  require_once('include.php');
+  require_once('config/config.php');
 
   // test connection mySQL
-  $db_connection_array = parse_ini_file("config/config.ini");
-    
-  $mysqli = new mysqli($db_connection_array['DB_HOST'], $db_connection_array['DB_USER'], $db_connection_array['DB_PASSWD'], $db_connection_array['DB_NAME']);
+  $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWD, DB_NAME);
   
   if ($mysqli->connect_error) {
         // problème connection mySQL =>STOP

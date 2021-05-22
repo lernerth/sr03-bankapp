@@ -1,5 +1,12 @@
 <?php
+require_once('include.php');
 session_start();
+
+if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
+    // utilisateur non connecté
+    header('Location: login.php');      
+    exit();
+} 
 ?>
 
 <!doctype html>
@@ -80,8 +87,8 @@ session_start();
                         foreach ($_SESSION['messagesRecus'] as $cle => $message) {
                             echo '<tr>';
                             echo '<td>' . $message['nom'] . ' ' . $message['prenom'] . '</td>';
-                            echo '<td>' . $message['sujet_msg'] . '</td>';
-                            echo '<td>' . $message['corps_msg'] . '</td>';
+                            echo '<td>'.htmlentities($message['sujet_msg'], ENT_QUOTES).'</td>';
+                            echo '<td>'.htmlentities($message['corps_msg'], ENT_QUOTES).'</td>';
                             echo '</tr>';
                         }
                         ?>
