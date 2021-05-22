@@ -1,0 +1,120 @@
+body {
+    text-align: center;
+    background: #eee;
+    width: 100%;
+    margin: 0;
+}
+
+.btn-logout {
+    position: absolute;
+    right: 10px;
+}
+
+.form-btn {
+    font-family: "Roboto", sans-serif;
+    background: #aaa;
+    border: 0;
+    padding: 5px 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+
+.form-btn:hover, .form-btn:active, .form-btn:focus {
+    background: #43A047;
+}
+
+.fieldset_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.fieldset {
+    background-color: #FFF;
+    width: 80%;
+    margin: 20px;
+    padding: 10px 30px;
+    text-align: left;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.user_info {
+    width: 450px;
+}
+
+.tools {
+    width: 600px;
+}
+
+.fieldset_label {
+    background-color: #999;
+    color: #fff;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding: 3px;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+.field label {
+    position: absolute;
+    color: #005;
+    width: 170px;
+    text-align: right;
+}
+
+.field span, .field input, .field select, .field textarea {
+    margin-left: 180px;
+    font-weight: bold;
+}
+
+.tools_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.messagerie, .virement, .fiche_client {
+    height: 80px;
+    width: 80px;
+    background-color: #eee;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.messagerie:hover, .messagerie:focus {
+    background: #f3d31f;
+}
+
+.messagerie:visited, .virement:visited, .fiche_client:visited {
+    color: rgb(0, 0, 0);
+}
+
+.virement:hover, .virement:focus {
+    background: #1498e4;
+}
+
+.fiche_client:hover, .fiche_client:focus {
+    background: #fc2b2b;
+}
+
+.tool_name {
+    cursor: default;
+    font-size: 0.7rem;
+    color: black;
+}

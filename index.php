@@ -18,10 +18,10 @@
 
         if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
             // utilisateur non connecté
-            header('Location: vw_login.php');      
+            header('Location: login.php');      
 
         } else {
-            header('Location: vw_moncompte.php');      
+            header('Location: moncompte.php');      
         }
   }
 

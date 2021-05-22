@@ -12,7 +12,7 @@
           /* ======== AUTHENT ======== */
           if (!isset($_REQUEST['login']) || !isset($_REQUEST['mdp']) || $_REQUEST['login'] == "" || $_REQUEST['mdp'] == "") {
               // manque login ou mot de passe
-              $url_redirect = "vw_login.php?nullvalue";
+              $url_redirect = "login.php?nullvalue";
               
           } else {
           
@@ -20,13 +20,13 @@
               
               if ($utilisateur == false) {
                 // echec authentification
-                $url_redirect = "vw_login.php?badvalue";
+                $url_redirect = "login.php?badvalue";
                 
               } else {
                 // authentification réussie
                 $_SESSION["connected_user"] = $utilisateur;
                 $_SESSION["listeUsers"] = findAllUsers();
-                $url_redirect = "vw_moncompte.php";
+                $url_redirect = "moncompte.php";
               }
           }
           
@@ -40,27 +40,24 @@
           if (is_numeric ($_REQUEST['montant'])) {
               transfert($_REQUEST['destination'],$_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
               $_SESSION["connected_user"]["solde_compte"] = $_SESSION["connected_user"]["solde_compte"] -  $_REQUEST['montant'];
-              $url_redirect = "vw_moncompte.php?trf_ok";
+              $url_redirect = "moncompte.php?trf_ok";
               
           } else {
-              $url_redirect = "vw_moncompte.php?bad_mt=".$_REQUEST['montant'];
+              $url_redirect = "moncompte.php?bad_mt=".$_REQUEST['montant'];
           }
        
       } else if ($_REQUEST['action'] == 'sendmsg') {
           /* ======== MESSAGE ======== */
           addMessage($_REQUEST['to'],$_SESSION["connected_user"]["id_user"],$_REQUEST['sujet'],$_REQUEST['corps']);
-          $url_redirect = "vw_moncompte.php?msg_ok";
+          $url_redirect = "messagerie.php?msg_ok";
               
       } else if ($_REQUEST['action'] == 'msglist') {
           /* ======== MESSAGE ======== */
           $_SESSION['messagesRecus'] = findMessagesInbox($_REQUEST["userid"]);
-          $url_redirect = "vw_messagerie.php";
-              
+          $url_redirect = "messagerie.php";          
       } 
 
        
   }  
   
   header("Location: $url_redirect");
-
-?>

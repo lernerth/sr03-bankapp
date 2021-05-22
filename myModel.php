@@ -39,7 +39,7 @@ function findAllUsers() {
   if ($mysqli->connect_error) {
       echo 'Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error;
   } else {
-      $req="select nom,prenom,login,id_user from users";
+      $req="select nom,prenom,login,id_user,profil_user from users";
       if (!$result = $mysqli->query($req)) {
           echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
       } else {
