@@ -116,7 +116,7 @@ function ifCompteExist($src)
 function transfert($dest, $src, $mt) {
   $mysqli = getMySqliConnection();
   if ($mysqli->connect_error) {
-      echo 'Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error;
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
       return false;
   } 
   if($mt>0 && $dest!=$src){
@@ -217,7 +217,6 @@ function ipIsBanned($ip)
 
 function isVirementSessionExpired() {
 	$login_session_duration = 5*60; //5 minutes
-	$current_time = time(); 
 	if(((time() - $_SESSION['virementOpened_time']) > $login_session_duration)){ 
 			return true; //expired
 		} 

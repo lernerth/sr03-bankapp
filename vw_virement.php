@@ -18,11 +18,7 @@ $_SESSION['virementOpened_time'] = time();
 <head>
   <meta charset="utf-8">
   <title>Virement</title>
- 
-  <link rel="stylesheet" type="text/css" media="all" href="css/messagerie.css" />
-  <style>
-    .btn-logout {position: absolute; right: 15px; top: 15px;}
-  </style>
+  <link rel="stylesheet" type="text/css" media="all" href="css/virement.css" />
 </head>
 <body>
     <header>
@@ -98,7 +94,6 @@ $_SESSION['virementOpened_time'] = time();
         </form>
         </article>
 
-        
     </section>
 
 </body>

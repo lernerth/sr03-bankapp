@@ -1,0 +1,90 @@
+body {
+    text-align: center;
+    background: #eee;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fieldset {
+    background-color: #FFF;
+    width: 450px;
+    margin: 20px;
+    padding: 10px 30px;
+    text-align: left;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    float: left;
+}
+
+.fieldset_label {
+    background-color: #999;
+    color: #fff;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding: 3px;
+}
+
+.form-btn {
+    font-family: "Roboto", sans-serif;
+    background: #aaa;
+    border: 0;
+    padding: 5px 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+
+.form-btn:hover, .form-btn:active, .form-btn:focus {
+    background: #43A047;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+.field label {
+    position: absolute;
+    color: #005;
+    width: 200px;
+    text-align: right;
+}
+
+.field span, .field input {
+    margin-left: 210px;
+    font-weight: bold;
+}
+
+header {
+    position: relative;
+    width: 100%;
+}
+
+.moncompte {
+    height: 20px;
+    width: 100px;
+    background-color: #aaa;
+    font-size: 14px;
+    font-family: "Roboto", sans-serif;
+    padding: 5px 20px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+}
+
+.moncompte:hover, .moncompte:active, .moncompte:focus {
+    background: #43A047;
+}
+
+.btn-logout {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
