@@ -37,10 +37,15 @@
           
       } else if ($_REQUEST['action'] == 'transfert') {
           /* ======== TRANSFERT ======== */
-          if (is_numeric ($_REQUEST['montant'])) {
-              transfert($_REQUEST['destination'],$_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
-              $_SESSION["connected_user"]["solde_compte"] = $_SESSION["connected_user"]["solde_compte"] -  $_REQUEST['montant'];
-              $url_redirect = "moncompte.php?trf_ok";
+          if (is_numeric ($_REQUEST['montant']) ) {
+              $utilisateur = false;
+              $utilisateur = transfert($_REQUEST['destination'],$_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
+              if( $utilisateur ){
+                $_SESSION["connected_user"]["solde_compte"] = getSoldeCompte($_SESSION["connected_user"]["numero_compte"]);
+                $url_redirect = "vw_moncompte.php?trf_ok";
+            }else {
+                $url_redirect = "vw_moncompte.php?bad_mt=".$_REQUEST['montant'];
+            }
               
           } else {
               $url_redirect = "moncompte.php?bad_mt=".$_REQUEST['montant'];

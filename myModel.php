@@ -54,27 +54,44 @@ function findAllUsers() {
   return $listeUsers;
 }
 
-
+function getSoldeCompte($src) {
+  $mysqli = getMySqliConnection();
+  $req="select solde_compte from users where numero_compte='$src'";
+    if (!$result = $mysqli->query($req)) {
+      echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
+    } else {
+      $solde_compte = $result->fetch_assoc();
+      $solde_compte =intval($solde_compte["solde_compte"]);
+    }
+    $result->free();
+    $mysqli->close();
+    return $solde_compte;
+}
 
 function transfert($dest, $src, $mt) {
   $mysqli = getMySqliConnection();
-
   if ($mysqli->connect_error) {
       echo 'Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error;
-      $utilisateur = false;
-  } else {
-      $req="update users set solde_compte=solde_compte+$mt where numero_compte='$dest'";
-      if (!$result = $mysqli->query($req)) {
+      return false;
+  } 
+  if($mt>0 && $dest!=$src){
+    $solde_compte =getSoldeCompte($src);
+    
+    if ($solde_compte < $mt) return false;
+    //need a transaction here
+      $req="START TRANSACTION;
+      update users set solde_compte=solde_compte+$mt where numero_compte='$dest';
+      update users set solde_compte=solde_compte-$mt where numero_compte='$src';
+      COMMIT;
+      ";
+      if (!$result = $mysqli->multi_query($req)) {
           echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
-      }
-      $req="update users set solde_compte=solde_compte-$mt where numero_compte='$src'";
-      if (!$result = $mysqli->query($req)) {
-          echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
+          return false;
       }
       $mysqli->close();
+      return true;
   }
-
-  return $utilisateur;
+  return false;
 }
 
 
@@ -116,5 +133,10 @@ function addMessage($to,$from,$subject,$body) {
   }
 
 }
-
+function mlog(){
+  $args = func_get_args();
+  foreach ($args as $arg){
+      file_put_contents('debug.txt', var_export($arg,true)."\n",FILE_APPEND);
+  }
+}
 ?>
