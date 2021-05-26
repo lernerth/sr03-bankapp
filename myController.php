@@ -42,13 +42,15 @@ if (isset($_REQUEST['action'])) {
         /* ======== TRANSFERT ======== */
         if (!isset($_REQUEST['mytoken']) || $_REQUEST['mytoken'] != $_SESSION['mytoken']) {
             // echec vérification du token (ex : attaque CSRF)
-            $url_redirect = "moncompte.php?err_token";
+            $url_redirect = "vw_virement.php?err_token";
         } 
         else if(isVirementSessionExpired()){
             $url_redirect = "login.php?disconnect";
         }
         else{
-            if (is_numeric($_REQUEST['montant'])) {
+            if(!isPwdCorrect($_SESSION['connected_user']['id_user'],$_REQUEST['password']))
+                $url_redirect = "vw_virement.php?bad_mdp";
+            else if (is_numeric($_REQUEST['montant'])) {
                 $utilisateur = false;
                 $utilisateur = transfert($_REQUEST['destination'], $_SESSION["connected_user"]["numero_compte"], $_REQUEST['montant']);
                 if ($utilisateur) {

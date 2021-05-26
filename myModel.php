@@ -223,12 +223,37 @@ function isVirementSessionExpired() {
 	return false;
 }
 
-function mlog()
-{
+function mlog() {
   $args = func_get_args();
   foreach ($args as $arg) {
     file_put_contents('debug.txt', var_export($arg, true) . "\n", FILE_APPEND);
   }
 }
 
+function isPwdCorrect($userId, $pwd) {
+  $mysqli = getMySqliConnection();
+  $res = false;
+
+  if ($mysqli->connect_error) {
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
+    $utilisateur = false;
+  } else {
+    // Pour faire vraiment propre, on devrait tester si le prepare et le execute se passent bien
+    $stmt = $mysqli->prepare("select id_user from users where id_user=? and mot_de_passe=?");
+    $stmt->bind_param("ss", $userId, $pwd); // on lie les paramètres de la requête préparée avec les variables
+    $stmt->execute();
+    $stmt->bind_result($id_user); // on prépare les variables qui recevront le résultat
+    if ($stmt->fetch()) {
+      // mdp correct
+      $res = true;
+    } else {
+      // les identifiants sont incorrects
+      $res = false;
+    }
+    $stmt->close();
+    $mysqli->close();
+  }
+
+  return $res;
+}
 ?>

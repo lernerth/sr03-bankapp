@@ -19,6 +19,15 @@ $_SESSION['virementOpened_time'] = time();
   <meta charset="utf-8">
   <title>Virement</title>
   <link rel="stylesheet" type="text/css" media="all" href="css/virement.css" />
+  <script>
+    function handleSub(){
+        var mdp = window.prompt('Mot de passe', '');
+        if(mdp !== null){
+            document.getElementById('mdp').value = mdp;
+            document.getElementById('myForm').submit();
+        }
+    }
+  </script>
 </head>
 <body>
     <header>
@@ -65,9 +74,10 @@ $_SESSION['virementOpened_time'] = time();
         </article>
         
         <article>
-        <form method="POST" action="myController.php">
+        <form method="POST" action="myController.php" id="myForm">
           <input type="hidden" name="action" value="transfert">
           <input type="hidden" name="mytoken" value="<?php echo $mytoken; ?>">
+          <input type="hidden" name="password" value="" id='mdp'>
           <div class="fieldset">
               <div class="fieldset_label">
                   <span>Transférer de l'argent</span>
@@ -78,7 +88,7 @@ $_SESSION['virementOpened_time'] = time();
               <div class="field">
                   <label>Montant à transférer : </label><input type="text" size="10" name="montant">
               </div>
-              <button class="form-btn">Transférer</button>
+              <input onclick="handleSub()" type="button" class="form-btn" value="Transférer">
               <?php
               if (isset($_REQUEST["trf_ok"])) {
                 echo '<p>Virement effectué avec succès.</p>';
@@ -88,6 +98,9 @@ $_SESSION['virementOpened_time'] = time();
               }
               if (isset($_REQUEST["bad_mtordest"])) {
                 echo '<p>Le compte ou le montant saisi est incorrect. </p>';
+              }
+              if (isset($_REQUEST["bad_mdp"])) {
+                echo '<p>le mot de passe saisi est incorrect. </p>';
               }
               ?>
           </div>
