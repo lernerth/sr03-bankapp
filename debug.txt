@@ -2,3 +2,43 @@
 '$2y$10$hZe1WDM5j5S/8.sFG4oD..GXuDmoC2UZGgtM29jGGbYhM13oM0YMO'
 'q'
 '$2y$10$qnoN94GkPfYynUvIGSZ/w.kFuQj.VD//Nfo56PPouogYBfPilJCEK'
+'before fetch'
+'true'
+'true'
+NULL
+'true'
+array (
+  'nom' => 'q',
+  'prenom' => 'q',
+  'login' => 'q',
+  'id_user' => 1,
+  'numero_compte' => 'q',
+  'profil_user' => 'ADMIN',
+  'solde_compte' => 61,
+)
+'before verigy'
+'before verigy'
+'false'
+'before returen'
+'before verigy'
+'false'
+'before returen'
+'before verigy'
+'true'
+'before returen'
+'before verigy'
+'false'
+'before returen'
+true
+' in false'
+false
+' in false'
+false
+'in else'
+'in else'
+false
+'in else'
+false
+false
+'utilisateur == false'
+'ogin.php?badvalue'

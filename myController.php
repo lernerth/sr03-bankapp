@@ -20,7 +20,6 @@ if (isset($_REQUEST['action'])) {
         } else {
             $car_interdits = array("'", "\"", ";", "%"); // une liste de caractères interdites
             $utilisateur = findUserByLoginPwd(str_replace($car_interdits, "", $_REQUEST['login']), str_replace($car_interdits, "", $_REQUEST['mdp']), $_SERVER['REMOTE_ADDR']);
-
             if ($utilisateur == false) {
                 // echec authentification
                 $url_redirect = "login.php?badvalue";
