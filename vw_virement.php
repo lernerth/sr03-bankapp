@@ -18,6 +18,7 @@ $_SESSION['virementOpened_time'] = time();
 <head>
   <meta charset="utf-8">
   <title>Virement</title>
+<<<<<<< HEAD
   <link rel="stylesheet" type="text/css" media="all" href="css/virement.css" />
   <script>
     function handleSub(){
@@ -28,6 +29,13 @@ $_SESSION['virementOpened_time'] = time();
         }
     }
   </script>
+=======
+ 
+  <link rel="stylesheet" type="text/css" media="all" href="css/messagerie.css" />
+  <style>
+    .btn-logout {position: absolute; right: 15px; top: 15px;}
+  </style>
+>>>>>>> e93bf30 (ajout des fiches cliens avec bouton de virement)
 </head>
 <body>
     <header>
