@@ -74,21 +74,23 @@ function findAllUsers()
   return $listeUsers;
 }
 
-function getSoldeCompte($src) {
+function getSoldeCompte($src)
+{
   $mysqli = getMySqliConnection();
   $req = $mysqli->prepare('select solde_compte from users where numero_compte=?');
   $req->bind_param('s', $src); // 's' specifies the variable type => 'string'
   $req->execute();
-    if (!$result =  $req->get_result()) {
-      echo 'Erreur requête BDD ['.$req.'] (' . $mysqli->errno . ') '. $mysqli->error;
-    } else {
-      $solde_compte = $result->fetch_assoc();
-      $solde_compte =intval($solde_compte["solde_compte"]);
-    }
-    $result->free();
-    $mysqli->close();
-    return $solde_compte;
+  if (!$result =  $req->get_result()) {
+    trigger_error('Erreur requête BDD [' . $req . '] (' . $mysqli->errno . ') ' . $mysqli->error, E_USER_ERROR);
+  } else {
+    $solde_compte = $result->fetch_assoc();
+    $solde_compte = intval($solde_compte["solde_compte"]);
+  }
+  $result->free();
+  $mysqli->close();
+  return $solde_compte;
 }
+
 function ifCompteExist($src)
 {
   $mysqli = getMySqliConnection();
@@ -104,24 +106,24 @@ function ifCompteExist($src)
     $stmt->fetch();
     $mysqli->close();
     if ($count == 0) {
-      return false;  
+      return false;
     } else {
       return true;
     }
-    
   }
 }
 
 
-function transfert($dest, $src, $mt) {
+function transfert($dest, $src, $mt)
+{
   $mysqli = getMySqliConnection();
   if ($mysqli->connect_error) {
     trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
-      return false;
-  } 
-  if($mt>0 && $dest!=$src){
-    $solde_compte =getSoldeCompte($src);
-    
+    return false;
+  }
+  if ($mt > 0 && $dest != $src) {
+    $solde_compte = getSoldeCompte($src);
+
     if ($solde_compte < $mt) return false;
     if (!ifCompteExist($dest)) return false;
     /* Start transaction */
@@ -129,7 +131,7 @@ function transfert($dest, $src, $mt) {
 
     try {
       $stmt = $mysqli->prepare('update users set solde_compte=solde_compte+? where numero_compte=?');
-      $stmt->bind_param('ds',  $mt,$dest);
+      $stmt->bind_param('ds',  $mt, $dest);
       $stmt->execute();
       $stmt = $mysqli->prepare('update users set solde_compte=solde_compte-? where numero_compte=?');
       $stmt->bind_param('ds',  $mt, $src);
@@ -174,22 +176,21 @@ function findMessagesInbox($userid)
   return $listeMessages;
 }
 
-function addMessage($to,$from,$subject,$body)
+function addMessage($to, $from, $subject, $body)
 {
   $mysqli = getMySqliConnection();
 
   if ($mysqli->connect_error) {
-      trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') '. $mysqli->connect_error, E_USER_ERROR);
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
   } else {
-      // Pour faire vraiment propre, on devrait tester si le execute et le prepare se passent bien
-      $stmt = $mysqli->prepare("insert into messages(id_user_to,id_user_from,sujet_msg,corps_msg) values(?,?,?,?)");  
-      $stmt->bind_param("iiss", $to,$from,$subject,$body); // on lie les paramètres de la requête préparée avec les variables
-      $stmt->execute(); 
-      $stmt->close();
+    // Pour faire vraiment propre, on devrait tester si le execute et le prepare se passent bien
+    $stmt = $mysqli->prepare("insert into messages(id_user_to,id_user_from,sujet_msg,corps_msg) values(?,?,?,?)");
+    $stmt->bind_param("iiss", $to, $from, $subject, $body); // on lie les paramètres de la requête préparée avec les variables
+    $stmt->execute();
+    $stmt->close();
 
-      $mysqli->close();
+    $mysqli->close();
   }
-
 }
 
 function ipIsBanned($ip)
@@ -211,26 +212,28 @@ function ipIsBanned($ip)
     } else {
       return false;
     }
-    
   }
 }
 
-function isVirementSessionExpired() {
-	$login_session_duration = 5*60; //5 minutes
-	if(((time() - $_SESSION['virementOpened_time']) > $login_session_duration)){ 
-			return true; //expired
-		} 
-	return false;
+function isVirementSessionExpired()
+{
+  $login_session_duration = 5 * 60; //5 minutes
+  if (((time() - $_SESSION['virementOpened_time']) > $login_session_duration)) {
+    return true; //expired
+  }
+  return false;
 }
 
-function mlog() {
+function mlog()
+{
   $args = func_get_args();
   foreach ($args as $arg) {
     file_put_contents('debug.txt', var_export($arg, true) . "\n", FILE_APPEND);
   }
 }
 
-function isPwdCorrect($userId, $pwd) {
+function isPwdCorrect($userId, $pwd)
+{
   $mysqli = getMySqliConnection();
   $res = false;
 
@@ -255,5 +258,23 @@ function isPwdCorrect($userId, $pwd) {
   }
 
   return $res;
+}
+
+function getNumero_compte($id_user)
+{
+  $mysqli = getMySqliConnection();
+
+  if ($mysqli->connect_error) {
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
+  } else {
+    $stmt = $mysqli->prepare("SELECT numero_compte FROM users WHERE id_user=?");
+    $stmt->bind_param("s",  $id_user);
+    $stmt->execute();
+    $stmt->bind_result($numero_compte);
+    $stmt->fetch();
+    $stmt->close();
+    $mysqli->close();
+    return $numero_compte;
+  }
 }
 ?>
