@@ -49,12 +49,11 @@ session_start();
                                     echo '<td>' . $user['id_user'] . '</td>';
                                     echo '<td>' . $user['profil_user'] . '</td>';
                                     echo '<td>' . $user['solde_compte'] . ' € </td>';
-                                    $numcompte =  $user['numero_compte'];
                                     echo '<td>' . $user['numero_compte'] . 
                                     '   <form method="POST" action="myController.php">
                                             <input type="hidden" name="action" value="load_virement">
                                              <div class="center">
-                                                    <button name ="$numcompte" value=" '. $user['id_user'] . '"> Faire un virement </a>
+                                                    <button name ="numcompte" value=" '. $user['numero_compte'] . '"> Faire un virement </a>
                                              </div>
                                             </form>
                                             </td>';

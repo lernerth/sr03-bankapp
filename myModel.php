@@ -59,7 +59,7 @@ function findAllUsers()
   if ($mysqli->connect_error) {
     trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
   } else {
-    $req = "select nom,prenom,login,id_user,profil_user from users";
+    $req = "select nom,prenom,login,id_user,profil_user,numero_compte,solde_compte from users";
     if (!$result = $mysqli->query($req)) {
       trigger_error('Erreur requête BDD [' . $req . '] (' . $mysqli->errno . ') ' . $mysqli->error, E_USER_ERROR);
     } else {
@@ -260,21 +260,4 @@ function isPwdCorrect($userId, $pwd)
   return $res;
 }
 
-function getNumero_compte($id_user)
-{
-  $mysqli = getMySqliConnection();
-
-  if ($mysqli->connect_error) {
-    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
-  } else {
-    $stmt = $mysqli->prepare("SELECT numero_compte FROM users WHERE id_user=?");
-    $stmt->bind_param("s",  $id_user);
-    $stmt->execute();
-    $stmt->bind_result($numero_compte);
-    $stmt->fetch();
-    $stmt->close();
-    $mysqli->close();
-    return $numero_compte;
-  }
-}
 ?>

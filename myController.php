@@ -72,8 +72,7 @@ if (isset($_REQUEST['action'])) {
         $url_redirect = "ficheclient.php";
     } else if ($_REQUEST['action'] == 'load_virement') {
         /* ======== MESSAGE ======== */
-        $_SESSION['numcompte'] = getNumero_compte($id_user);
-        $url_redirect = "vw_virement.php";
+        $url_redirect = "vw_virement.php?numcompte=" . $_REQUEST['numcompte'];
     }
 }
 header("Location: $url_redirect");
