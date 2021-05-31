@@ -78,7 +78,7 @@ if(!isset($_SESSION["connected_user"]) || $_SESSION["connected_user"] == "") {
                         </svg>
                         <span class="tool_name">Virement</span>
                     </a>
-                    <a class="fiche_client" href="myController.php?action=usrlist&userid=<?php echo $_SESSION["connected_user"]["id_user"]; ?>">
+                    <a class="fiche_client" href="myController.php?action=usrlist">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-clients"></use>
                         </svg>
