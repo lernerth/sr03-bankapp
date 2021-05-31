@@ -17,7 +17,7 @@ function findUserByLoginPwd($login, $pwd, $ip)
   } else {
     // Pour faire vraiment propre, on devrait tester si le prepare et le execute se passent bien
     $stmt = $mysqli->prepare("select nom,prenom,login,id_user,numero_compte,profil_user,solde_compte from users where login=? and mot_de_passe=?");
-    $stmt->bind_param("ss", $login, $pwd); // on lie les paramètres de la requête préparée avec les variables
+    $stmt->bind_param("ss", $login, password_hash($pwd, PASSWORD_DEFAULT)); // on lie les paramètres de la requête préparée avec les variables
     $stmt->execute();
     $stmt->bind_result($nom, $prenom, $username, $id_user, $numero_compte, $profil_user, $solde_compte); // on prépare les variables qui recevront le résultat
     if ($stmt->fetch()) {
