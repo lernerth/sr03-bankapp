@@ -29,29 +29,26 @@ session_start();
                         <tr>
                             <th>Nom</th>
                             <th>Prénom</th>
+                            <th>Login</th>
+                            <th>ID utilisateur</th>
+                            <th>Profil</th>
+                            <th>Solde bancaire</th>
                             <th>Numéro de compte</th>
                         </tr>
                         <?php
                         foreach ($_SESSION['listeUsers'] as $id => $user) {
                             if (strcmp($_SESSION['connected_user']['profil_user'], 'CLIENT') == 0) {
                                 if (strcmp($user['profil_user'], 'CLIENT') == 0)
-                                    echo '<tr>';
-                                    echo '<td>' . $user['nom'] . '</td>';
-                                    echo '<td>' . $user['prenom'] . '</td>';
-                                    echo '<td>' . $user['numero_compte'] . '&nbsp;&nbsp  
-                                        <form method="POST" action="myController.php">
-                                            <input type="hidden" name="action" value="load_virement">
-                                            <div class="center">
-                                                <button id="myButton" value=" '. $user['id_user'] . '"> Faire un virement </a>
-                                            </div>
-                                        </form>
-                                        </td>';
-                                    echo '</tr>';
+                                    echo "<errmsg> Vous n'êtes pas un employé, et n'avez donc pas à cette page. <br></errmsg><br>";
                             } else {
                                 if (strcmp($user['id_user'], $_SESSION['connected_user']['id_user']) != 0)
                                     echo '<tr>';
                                     echo '<td>' . $user['nom'] . '</td>';
                                     echo '<td>' . $user['prenom'] . '</td>';
+                                    echo '<td>' . $user['login'] . '</td>';
+                                    echo '<td>' . $user['id_user'] . '</td>';
+                                    echo '<td>' . $user['profil_user'] . '</td>';
+                                    echo '<td>' . $user['solde_compte'] . ' € </td>';
                                     $numcompte =  $user['numero_compte'];
                                     echo '<td>' . $user['numero_compte'] . 
                                     '   <form method="POST" action="myController.php">
