@@ -39,7 +39,6 @@ function findUserByLoginPwd($login, $pwd, $ip)
     } else {
       // les identifiants sont incorrects
       $utilisateur = false;
-      mlog("in else");
       // on log l'IP ayant généré l'erreur
       $stmt_insert = $mysqli->prepare("insert into connection_errors(ip,error_date) values(?,CURTIME())");
       $stmt_insert->bind_param("s", $ip); // Eventuellement, gérer le cas où l'utilisateur on est derrière un proxy en utilisant $_SERVER['HTTP_X_FORWARDED_FOR'] 
