@@ -32,7 +32,7 @@ session_start();
                             <th>Login</th>
                             <th>ID utilisateur</th>
                             <th>Profil</th>
-                            <th>Solde bancaire</th>
+                            <!-- <th>Solde bancaire</th> -->
                             <th>Numéro de compte</th>
                         </tr>
                         <?php
@@ -41,14 +41,14 @@ session_start();
                                 if (strcmp($user['profil_user'], 'CLIENT') == 0)
                                     echo "<errmsg> Vous n'êtes pas un employé, et n'avez donc pas à cette page. <br></errmsg><br>";
                             } else {
-                                if (strcmp($user['id_user'], $_SESSION['connected_user']['id_user']) != 0)
+                                if (strcmp($user['id_user'], $_SESSION['connected_user']['id_user']) != 0 ){
                                     echo '<tr>';
                                     echo '<td>' . $user['nom'] . '</td>';
                                     echo '<td>' . $user['prenom'] . '</td>';
                                     echo '<td>' . $user['login'] . '</td>';
                                     echo '<td>' . $user['id_user'] . '</td>';
                                     echo '<td>' . $user['profil_user'] . '</td>';
-                                    echo '<td>' . $user['solde_compte'] . ' € </td>';
+                                    //echo '<td>' . $user['solde_compte'] . ' € </td>';
                                     echo '<td>' . $user['numero_compte'] . 
                                     '   <form method="POST" action="myController.php">
                                             <input type="hidden" name="action" value="load_virement">
@@ -58,6 +58,7 @@ session_start();
                                             </form>
                                             </td>';
                                     echo '</tr>';
+                                }
                             }
                         }
                         ?>

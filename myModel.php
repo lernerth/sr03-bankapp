@@ -10,42 +10,43 @@ function getMySqliConnection()
 function findUserByLoginPwd($login, $pwd, $ip)
 {
   $mysqli = getMySqliConnection();
-
   if ($mysqli->connect_error) {
     trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
     $utilisateur = false;
   } else {
     // Pour faire vraiment propre, on devrait tester si le prepare et le execute se passent bien
-    $stmt = $mysqli->prepare("select nom,prenom,login,id_user,numero_compte,profil_user,solde_compte from users where login=? and mot_de_passe=?");
-    $stmt->bind_param("ss", $login, password_hash($pwd, PASSWORD_DEFAULT)); // on lie les paramètres de la requête préparée avec les variables
-    $stmt->execute();
-    $stmt->bind_result($nom, $prenom, $username, $id_user, $numero_compte, $profil_user, $solde_compte); // on prépare les variables qui recevront le résultat
-    if ($stmt->fetch()) {
-      // les identifiants sont corrects => on renvoie les infos de l'utilisateur
-      $utilisateur = array(
-        "nom" => $nom,
-        "prenom" => $prenom,
-        "login" => $username,
-        "id_user" => $id_user,
-        "numero_compte" => $numero_compte,
-        "profil_user" => $profil_user,
-        "solde_compte" => $solde_compte
-      );
+    //$stmt = $mysqli->prepare("select nom,prenom,login,id_user,numero_compte,profil_user,solde_compte from users where login=? and mot_de_passe=?");
+    //$stmt->bind_param("ss", $login, password_hash($pwd, PASSWORD_DEFAULT)); // on lie les paramètres de la requête préparée avec les variables
+    //$stmt->bind_param("ss", $login, $pwd);
+    if(isPwdCorrect2($login, $pwd)){
+      $stmt = $mysqli->prepare("select nom,prenom,login,id_user,numero_compte,profil_user,solde_compte from users where login=? ");
+      $stmt->bind_param("s", $login);
+      $stmt->execute();
+      $stmt->bind_result($nom, $prenom, $username, $id_user, $numero_compte, $profil_user, $solde_compte); // on prépare les variables qui recevront le résultat
+      if ($stmt->fetch()) {
+        // les identifiants sont corrects => on renvoie les infos de l'utilisateur
+        $utilisateur = array(
+          "nom" => $nom,
+          "prenom" => $prenom,
+          "login" => $username,
+          "id_user" => $id_user,
+          "numero_compte" => $numero_compte,
+          "profil_user" => $profil_user,
+          "solde_compte" => $solde_compte
+        );
+      }
+      $stmt->close();
     } else {
       // les identifiants sont incorrects
       $utilisateur = false;
-
       // on log l'IP ayant généré l'erreur
       $stmt_insert = $mysqli->prepare("insert into connection_errors(ip,error_date) values(?,CURTIME())");
       $stmt_insert->bind_param("s", $ip); // Eventuellement, gérer le cas où l'utilisateur on est derrière un proxy en utilisant $_SERVER['HTTP_X_FORWARDED_FOR'] 
       $stmt_insert->execute();
       $stmt_insert->close();
     }
-    $stmt->close();
-
     $mysqli->close();
   }
-
   return $utilisateur;
 }
 
@@ -232,6 +233,8 @@ function mlog()
   }
 }
 
+
+
 function isPwdCorrect($userId, $pwd)
 {
   $mysqli = getMySqliConnection();
@@ -242,13 +245,14 @@ function isPwdCorrect($userId, $pwd)
     $utilisateur = false;
   } else {
     // Pour faire vraiment propre, on devrait tester si le prepare et le execute se passent bien
-    $stmt = $mysqli->prepare("select id_user from users where id_user=? and mot_de_passe=?");
-    $stmt->bind_param("ss", $userId, $pwd); // on lie les paramètres de la requête préparée avec les variables
+    
+    $stmt = $mysqli->prepare("select mot_de_passe from users where id_user=?");
+    $stmt->bind_param("s", $userId); // on lie les paramètres de la requête préparée avec les variables
     $stmt->execute();
-    $stmt->bind_result($id_user); // on prépare les variables qui recevront le résultat
-    if ($stmt->fetch()) {
+    $stmt->bind_result($mot_de_passe); // on prépare les variables qui recevront le résultat
+    if ($stmt->fetch() && password_verify($pwd, $mot_de_passe)) {
       // mdp correct
-      $res = true;
+        $res = true; 
     } else {
       // les identifiants sont incorrects
       $res = false;
@@ -256,7 +260,33 @@ function isPwdCorrect($userId, $pwd)
     $stmt->close();
     $mysqli->close();
   }
+  return $res;
+}
+function isPwdCorrect2($login, $pwd)
+{
+  $mysqli = getMySqliConnection();
+  $res = false;
 
+  if ($mysqli->connect_error) {
+    trigger_error('Erreur connection BDD (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error, E_USER_ERROR);
+    $utilisateur = false;
+  } else {
+    // Pour faire vraiment propre, on devrait tester si le prepare et le execute se passent bien
+    
+    $stmt = $mysqli->prepare("select mot_de_passe from users where login=?");
+    $stmt->bind_param("s", $login); // on lie les paramètres de la requête préparée avec les variables
+    $stmt->execute();
+    $stmt->bind_result($mot_de_passe); // on prépare les variables qui recevront le résultat
+    if ($stmt->fetch() && password_verify($pwd, $mot_de_passe)) {
+      // mdp correct
+        $res = true; 
+    } else {
+      // les identifiants sont incorrects
+      $res = false;
+    }
+    $stmt->close();
+    $mysqli->close();
+  }
   return $res;
 }
 
